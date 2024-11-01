@@ -27,4 +27,4 @@ def get_settings():
     return Settings()
 
 
-SETTINGS_TYPE = Annotated[Settings, Depends(get_settings)]
+SettingsDep = Annotated[Settings, Depends(get_settings)]

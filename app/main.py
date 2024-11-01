@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.databases import create_db_and_tables
-from app.settings import SETTINGS_TYPE
+from app.settings import SettingsDep
 
 from .authentication import views as auth
 from .user import views as user
@@ -37,5 +37,5 @@ app.include_router(auth.router)
 
 
 @app.get("/")
-async def root(settings: SETTINGS_TYPE):
+async def root(settings: SettingsDep):
     return {"message": "Hello World", "token": settings.token}

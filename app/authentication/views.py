@@ -5,7 +5,7 @@ from fastapi import APIRouter, Cookie, HTTPException
 from jwt.exceptions import InvalidTokenError
 
 from ..databases import SessionDep
-from ..settings import SETTINGS_TYPE
+from ..settings import SettingsDep
 from ..user.models import User
 from . import clerk
 
@@ -17,7 +17,7 @@ router = APIRouter(
 
 @router.get("/login")
 async def login(
-    settings: SETTINGS_TYPE,
+    settings: SettingsDep,
     session: SessionDep,
     __session: Annotated[Union[str, None], Cookie()] = None,
 ):
@@ -42,7 +42,7 @@ async def login(
 
 @router.get("/logout")
 async def logout(
-    settings: SETTINGS_TYPE,
+    settings: SettingsDep,
     __session: Annotated[Union[str, None], Cookie()] = None,
 ):
     try:
