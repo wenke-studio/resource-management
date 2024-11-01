@@ -1,0 +1,15 @@
+[project]
+name = "resource-management"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.4",
+    "uvicorn>=0.32.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "rust>=1.3.1",
+]
