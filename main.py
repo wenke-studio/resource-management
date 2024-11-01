@@ -1,9 +1,17 @@
-from typing import Union
+from functools import lru_cache
+from typing import Annotated, Union
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 
+from config import Settings
+
 app = FastAPI()
+
+
+@lru_cache
+def get_settings():
+    return Settings(token="hello world")
 
 
 class Item(BaseModel):
@@ -13,8 +21,11 @@ class Item(BaseModel):
 
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def read_root(settings: Annotated[Settings, Depends(get_settings)]):
+    return {
+        "Hello": "World",
+        "settings": settings.token,
+    }
 
 
 @app.get("/items/{item_id}")
