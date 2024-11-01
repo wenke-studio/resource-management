@@ -1,6 +1,6 @@
 from typing import Annotated, Union
 
-from clerk_backend_api.models import ClerkError, SDKError
+from clerk_backend_api.models import ClerkErrors, SDKError
 from fastapi import APIRouter, Cookie, HTTPException
 from jwt.exceptions import InvalidTokenError
 
@@ -36,7 +36,7 @@ async def login(
             )
             session.commit()
         return {"message": "user logged in"}
-    except (InvalidTokenError, SDKError, ClerkError):
+    except (InvalidTokenError, SDKError, ClerkErrors):
         raise HTTPException(status_code=401, detail="Invalid session token")
 
 
@@ -48,5 +48,5 @@ async def logout(
     try:
         clerk.revoke_session(settings.clerk_secret_key, __session)
         return {"message": "logged out"}
-    except (ClerkError, SDKError):
+    except (ClerkErrors, SDKError):
         raise HTTPException(status_code=401, detail="Invalid session token")

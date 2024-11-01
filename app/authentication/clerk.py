@@ -46,6 +46,8 @@ class ClerkSessionToken(BaseModel):
 def decode_session_token(
     clerk_secret_key: str, session_token: str
 ) -> ClerkSessionToken:
+    # todo: should we cache this token?
+
     key = get_jwks(clerk_secret_key)  # cache
     payload = jwt.decode(session_token, key.n, algorithms=[key.alg])
     return ClerkSessionToken(**payload)
