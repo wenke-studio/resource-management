@@ -12,13 +12,13 @@ class Settings(BaseSettings):
         validate_default=False,
     )
 
-    token: str
+    clerk_secret_key: str = None
 
-    @field_validator("token")
+    @field_validator("clerk_secret_key")
     @classmethod
     def token_must_not_be_empty(cls, value: str) -> str:
         if not value:
-            raise ValueError("token is required")
+            raise ValueError("clerk_secret_key is required")
         return value
 
 

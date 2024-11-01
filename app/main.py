@@ -3,8 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .databases import create_db_and_tables
-from .settings import SETTINGS_TYPE
+from app.databases import create_db_and_tables
+from app.settings import SETTINGS_TYPE
+
+from .authentication import views as auth
 from .user import views as user
 
 
@@ -31,6 +33,7 @@ app.add_middleware(
 )
 
 app.include_router(user.router)
+app.include_router(auth.router)
 
 
 @app.get("/")
