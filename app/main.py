@@ -1,21 +1,13 @@
-from functools import lru_cache
-from typing import Annotated
-
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 
 from .routers import users
-from .settings import Settings
+from .settings import SETTINGS_TYPE
 
 app = FastAPI()
 
 app.include_router(users.router)
 
 
-@lru_cache
-def get_settings():
-    return Settings()
-
-
 @app.get("/")
-async def root(settings: Annotated[Settings, Depends(get_settings)]):
+async def root(settings: SETTINGS_TYPE):
     return {"message": "Hello World", "token": settings.token}

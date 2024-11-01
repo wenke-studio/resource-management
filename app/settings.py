@@ -1,3 +1,7 @@
+from functools import lru_cache
+from typing import Annotated
+
+from fastapi import Depends
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -16,3 +20,11 @@ class Settings(BaseSettings):
         if not value:
             raise ValueError("token is required")
         return value
+
+
+@lru_cache
+def get_settings():
+    return Settings()
+
+
+SETTINGS_TYPE = Annotated[Settings, Depends(get_settings)]
