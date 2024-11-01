@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .databases import create_db_and_tables
-from .routers import users
 from .settings import SETTINGS_TYPE
+from .user import views as user
 
 
 @asynccontextmanager
@@ -30,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(users.router)
+app.include_router(user.router)
 
 
 @app.get("/")
