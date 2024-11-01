@@ -3,8 +3,8 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI
 
-from .config import Settings
 from .routers import users
+from .settings import Settings
 
 app = FastAPI()
 
@@ -13,7 +13,7 @@ app.include_router(users.router)
 
 @lru_cache
 def get_settings():
-    return Settings(token="hello world")
+    return Settings()
 
 
 @app.get("/")
