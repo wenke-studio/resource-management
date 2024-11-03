@@ -26,6 +26,7 @@ def test_read_users(client: TestClient):
     # create a user
     payload = {
         "id": fake.uuid4(),
+        "username": fake.user_name(),
         "email": fake.email(),
     }
     response = client.post("/users/", json=payload)
@@ -37,18 +38,17 @@ def test_read_users(client: TestClient):
 
     # assert the user is in the list
     body = response.json()
-    assert len(body) == 1
-    assert body[0]["id"] == payload["id"]
-    assert body[0]["email"] == payload["email"]
+    assert payload in body
 
 
-def test_get_user(client: TestClient):
+def test_retrieve_user(client: TestClient):
     payload = {
         "id": fake.uuid4(),
         "email": fake.email(),
+        "username": fake.user_name(),
     }
 
-    # try to get a user that does not exist
+    # try to retrieve a user that does not exist
     response = client.get(f"/users/{payload['id']}")
     assert response.status_code == 404
 
@@ -62,8 +62,7 @@ def test_get_user(client: TestClient):
 
     # assert the user is correct
     body = response.json()
-    assert body["id"] == payload["id"]
-    assert body["email"] == payload["email"]
+    assert payload == body
 
 
 def test_delete_user(client: TestClient, db_session: Session):
