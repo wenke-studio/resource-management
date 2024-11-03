@@ -7,6 +7,7 @@ from app.databases import create_db_and_tables
 from app.settings import SettingsDep
 
 from .authentication import views as auth
+from .namespace import views as namespace
 from .user import views as user
 
 
@@ -34,6 +35,7 @@ app.add_middleware(
 
 app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(namespace.router)
 
 
 @app.get("/")
