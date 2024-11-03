@@ -38,4 +38,4 @@ app.include_router(auth.router)
 
 @app.get("/")
 async def root(settings: SettingsDep):
-    return {"message": "Hello World", "token": settings.token}
+    return {"message": "Hello World", "clerk_secret_key": settings.clerk_secret_key}

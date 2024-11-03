@@ -40,6 +40,8 @@ async def retrieve_user(id: str, session: SessionDep):
 
 @router.delete("/{id}")
 async def delete_user(id: str, session: SessionDep):
-    session.exec(select(User).where(User.id == id)).delete()
-    session.commit()
+    user = session.get(User, id)
+    if user:
+        session.delete(user)
+        session.commit()
     return {"message": "User deleted"}
