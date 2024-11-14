@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 
 from app.databases import create_db_and_tables
 from app.settings import SettingsDep
@@ -38,6 +39,6 @@ app.include_router(auth.router)
 app.include_router(namespace.router)
 
 
-@app.get("/")
-async def root(settings: SettingsDep):
-    return {"message": "Hello World", "clerk_secret_key": settings.clerk_secret_key}
+@app.get("/ping")
+async def ping():
+    return PlainTextResponse("pong")
