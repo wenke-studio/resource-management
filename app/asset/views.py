@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import magic
-from fastapi import APIRouter, HTTPException, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, HTTPException, UploadFile, status
 from sqlmodel import select
 
 from ..databases import SessionDep
@@ -23,7 +23,9 @@ def file_storage(filename: str, content: bytes):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Asset)
-async def create_asset(upload_file: UploadFile, session: SessionDep):
+async def create_asset(
+    upload_file: UploadFile, session: SessionDep, background_task: BackgroundTasks
+):
     content = await upload_file.read()
     asset = Asset(
         filename=upload_file.filename,
@@ -33,10 +35,7 @@ async def create_asset(upload_file: UploadFile, session: SessionDep):
     session.add(asset)
     session.commit()
     session.refresh(asset)
-
-    # todo: define background tasks to be run after returning a response.
-    file_storage(asset.storage_path, content)
-
+    background_task.add_task(file_storage, asset.storage_path, content)
     return asset
 
 
